@@ -36,13 +36,14 @@ class Cylinder {
         /* linear interpolation between two colors */
         vertices.push(randColor[0], randColor[1], randColor[2]);
 
+        //Top of cyclinder
         for (let k = 0; k < subDiv; k++) {
             let angle = k * 2 * Math.PI / subDiv;
             let x = radiusT * Math.cos(angle);
             let y = radiusT * Math.sin(angle);
 
             /* the first three floats are 3D (x,y,z) position */
-            vertices.push(x, y, 0);
+            vertices.push(x, y, height);
             /* perimeter of base */
             vec3.lerp(randColor, col1, col2, Math.random());
             /* linear interpolation between two colors */
@@ -75,7 +76,9 @@ class Cylinder {
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vbuff);
         gl.bufferData(gl.ARRAY_BUFFER, Float32Array.from(vertices), gl.STATIC_DRAW);
 
-        // Generate index order for top of cone
+        console.log(vertices);
+
+        // Generate index order for top of cylinder
         let topIndex = [];
         topIndex.push(0);
         for (let k = 1; k <= subDiv; k++)
@@ -85,12 +88,12 @@ class Cylinder {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.topIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(topIndex), gl.STATIC_DRAW);
 
-        // Generate index order for bottom of cone
+        // Generate index order for bottom of cylinder
         let botIndex = [];
         botIndex.push(subDiv + 1);
-        for (let k = subDiv; k >= 1; k--)
+        for (let k = (2 * subDiv) + 1; k > subDiv + 1; k--)
             botIndex.push(k);
-        botIndex.push(subDiv);
+        botIndex.push((2 * subDiv) + 1);
         this.botIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.botIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(botIndex), gl.STATIC_DRAW);
@@ -102,6 +105,12 @@ class Cylinder {
             vertIndex.push(k + (subDiv + 1));
         }
         vertIndex.push(1);
+        vertIndex.push(subDiv + 2);
+
+         console.log(topIndex);
+         console.log(botIndex);
+        console.log(vertIndex);
+
         this.vertIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(vertIndex), gl.STATIC_DRAW);
@@ -110,7 +119,7 @@ class Cylinder {
         /* Put the indices as an array of objects. Each object has three attributes:
          primitive, buffer, and numPoints */
         this.indices = [{"primitive": gl.TRIANGLE_FAN, "buffer": this.topIdxBuff, "numPoints": topIndex.length},
-                        {"primitive": gl.TRIANGLE_FAN, "buffer": this.botIdxBuff, "numPoints": botIndex.length},
+                        //{"primitive": gl.TRIANGLE_FAN, "buffer": this.botIdxBuff, "numPoints": botIndex.length},
                         {"primitive": gl.TRIANGLE_STRIP, "buffer": this.vertIdxBuff, "numPoints": vertIndex.length}];
     }
 
