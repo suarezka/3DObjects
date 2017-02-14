@@ -91,7 +91,7 @@ function createObject() {
       let radius = document.getElementById("cone-radius").valueAsNumber;
       let subDiv = document.getElementById("cone-subdiv").valueAsNumber;
       let stacks = document.getElementById("cone-stacks").valueAsNumber;
-      console.log ("Cylinder radius: " + radius + " height: " + height + " sub division: " + subDiv +
+      console.log ("Cone radius: " + radius + " height: " + height + " sub division: " + subDiv +
                     "stacks" + stacks);
       obj = new Cone(gl, radius, height, subDiv, stacks);
       break;
@@ -105,6 +105,17 @@ function createObject() {
         console.log ("Cylinder radius: " + radiusT + " " + radiusB + " height: "
                         + height1 + " sub division: " + subDiv1 + "stacks" + stacks1);
         obj = new Cylinder(gl, radiusT, radiusB, height1, subDiv1, stacks1);
+
+      case 2:
+        let height2 = document.getElementById("cube-height").valueAsNumber;
+        let radius2 = document.getElementById("cube-radius").valueAsNumber;
+        let subDiv2 = document.getElementById("cube-subdiv").valueAsNumber;
+        let stacks2 = document.getElementById("cube-stacks").valueAsNumber;
+
+        console.log("Cube height: " + height2 + "radius: " + radius2 +
+                      " sub division: " + subDiv2 + "stacks" + stacks2);
+
+        obj = new Cube(gl, height2, radius2, subDiv2, stacks2);
 
       break;
   }
