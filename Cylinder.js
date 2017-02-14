@@ -119,7 +119,7 @@ class Cylinder {
         /* Put the indices as an array of objects. Each object has three attributes:
          primitive, buffer, and numPoints */
         this.indices = [{"primitive": gl.TRIANGLE_FAN, "buffer": this.topIdxBuff, "numPoints": topIndex.length},
-                        //{"primitive": gl.TRIANGLE_FAN, "buffer": this.botIdxBuff, "numPoints": botIndex.length},
+                        {"primitive": gl.TRIANGLE_FAN, "buffer": this.botIdxBuff, "numPoints": botIndex.length},
                         {"primitive": gl.TRIANGLE_STRIP, "buffer": this.vertIdxBuff, "numPoints": vertIndex.length}];
     }
 
