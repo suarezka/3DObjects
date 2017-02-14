@@ -25,22 +25,12 @@ class Cube {
         //VERTICAL INTERVAL OF STACKS
         let div = height / stacks;
 
-        /* Instead of allocating two separate JS arrays (one for position and one for color),
-         in the following loop we pack both position and color
-         so each tuple (x,y,z,r,g,b) describes the properties of a vertex
-         */
-        vertices.push(0, 0, height);
-        /* tip of cone */
-        vec3.lerp(randColor, col1, col2, Math.random());
-        /* linear interpolation between two colors */
-        vertices.push(randColor[0], randColor[1], randColor[2]);
-
         for (let k = 0; k < 2 * subDiv; k++) {
             let angle = k * 2 * Math.PI / subDiv;
             let x = radius * Math.cos(angle);
             let y = radius * Math.sin(angle);
 
-            if (k > subDiv) {
+            if (k >= subDiv) {
                 vertices.push(x, y, height);
             } else {
                 /* the first three floats are 3D (x,y,z) position */
@@ -54,43 +44,43 @@ class Cube {
             vertices.push(randColor[0], randColor[1], randColor[2]);
         }
 
-        //vertices.push(0, 0, 0);
-        /* center of base */
-        vec3.lerp(randColor, col1, col2, Math.random());
-        /* linear interpolation between two colors */
-        vertices.push(randColor[0], randColor[1], randColor[2]);
-
         /* copy the (x,y,z,r,g,b) sixtuplet into GPU buffer */
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vbuff);
         gl.bufferData(gl.ARRAY_BUFFER, Float32Array.from(vertices), gl.STATIC_DRAW);
 
         // Generate index order for top of cone
-        let topIndex = [];
-        topIndex.push(0);
-        for (let k = 1; k <= subDiv; k++)
-            topIndex.push(k);
-        topIndex.push(1);
+        let topIndex = [4, 0, 1, 5, 6, 7, 3, 0];
+
+        /* CREATE LOOP TO FILL ARRAY FOR TRIANGLE FAN //TODO:
+        topIndex.push(subDiv);
+        for (let k = 0; k < 2 * subDiv; k++) {
+
+        }
+        */
+
         this.topIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.topIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(topIndex), gl.STATIC_DRAW);
 
         // Generate index order for bottom of cone
-        let botIndex = [];
-        botIndex.push(subDiv + 1);
-        for (let k = subDiv; k >= 1; k--)
-            botIndex.push(k);
-        botIndex.push(subDiv);
+        let botIndex = [2, 3, 7, 6, 5, 1, 0, 3];
+
+        /* CREATE LOOP TO FILL ARRAY FOR TRIANGLE FAN //TODO: */
+
+
         this.botIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.botIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(botIndex), gl.STATIC_DRAW);
 
         console.log(vertices);
+        console.log(topIndex);
+        console.log(botIndex);
 
 
         /* Put the indices as an array of objects. Each object has three attributes:
          primitive, buffer, and numPoints */
         this.indices = [{"primitive": gl.TRIANGLE_FAN, "buffer": this.topIdxBuff, "numPoints": topIndex.length},
-            {"primitive": gl.TRIANGLE_FAN, "buffer": this.botIdxBuff, "numPoints": botIndex.length}];
+                        {"primitive": gl.TRIANGLE_FAN, "buffer": this.botIdxBuff, "numPoints": botIndex.length}];
     }
 
     /**
