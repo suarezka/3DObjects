@@ -97,6 +97,15 @@ function createObject() {
       break;
     case 1:
       /* TODO: obtain user input parameters and create the object */
+        let height1 = document.getElementById("cyl-height").valueAsNumber;
+        let radiusT = document.getElementById("cyl-radiusT").valueAsNumber;
+        let radiusB = document.getElementById("cyl-radiusB").valueAsNumber;
+        let subDiv1 = document.getElementById("cyl-subdiv").valueAsNumber;
+        let stacks1 = document.getElementById("cyl-stacks").valueAsNumber;
+        console.log ("Cylinder radius: " + radiusT + " " + radiusB + " height: "
+                        + height1 + " sub division: " + subDiv1 + "stacks" + stacks1);
+        obj = new Cylinder(gl, radiusT, radiusB, height1, subDiv1, stacks1);
+
       break;
   }
 }
