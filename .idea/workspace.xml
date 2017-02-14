@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="bfaf862b-3ad7-4675-bf15-6ff3a5dda061" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Cylinder.js" afterPath="$PROJECT_DIR$/Cylinder.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -223,12 +221,20 @@
       <updated>1486954729784</updated>
       <workItem from="1486954731007" duration="2679000" />
       <workItem from="1487025291366" duration="4027000" />
-      <workItem from="1487044787095" duration="5446000" />
+      <workItem from="1487044787095" duration="5558000" />
     </task>
+    <task id="LOCAL-00001" summary="Better working cylinder -- bottom triangle fan not working">
+      <created>1487050574675</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1487050574675</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12152000" />
+    <option name="totallyTimeSpent" value="12264000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="131" y="23" width="1107" height="729" extended-state="0" />
@@ -257,6 +263,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Better working cylinder -- bottom triangle fan not working" />
+    <option name="LAST_COMMIT_MESSAGE" value="Better working cylinder -- bottom triangle fan not working" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
