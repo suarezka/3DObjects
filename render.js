@@ -118,6 +118,19 @@ function createObject() {
 
             obj = new Cube(gl, height2, radius2, subDiv2, stacks2);
             break;
+
+        case 3:
+            let height3 = document.getElementById("sphere1-height").valueAsNumber;
+            let radius3 = document.getElementById("sphere1-radius").valueAsNumber;
+            let lat = document.getElementById("sphere1-lat").valueAsNumber;
+            let long = document.getElementById("sphere1-long").valueAsNumber;
+
+            console.log("Sphere height: " + height3 + "radius: " + radius3 +
+                " lat: " + lat + " long:" + long);
+
+            obj = new Sphere(gl, height3, radius3, lat, long);
+            break;
+
     }
 }
 
