@@ -50,32 +50,27 @@ class Cylinder {
             /* the next three floats are RGB */
             vertices.push(randColor[0], randColor[1], randColor[2]);
         }
-/*
-        let r = 0;
-        let h = height;
-        for (let i = 1; i <= stacks; i++) {
-            let n = (Math.abs(radiusT - radiusB));
-            r = radiusT + (i * (n / stacks));
-            h = height - (i * (height / stacks));
 
-            for (let k = 0; k < subDiv; k++) {
-                let angle = k * 2 * Math.PI / subDiv;
-                let x = r * Math.cos(angle);
-                let y = r * Math.sin(angle);
+        if (stacks > 1) {
+            let r = 0;
+            let h = height;
+            for (let i = 1; i < stacks; i++) {
+                let n = (Math.abs(radiusT - radiusB));
+                r = radiusT + (i * (n / stacks));
+                h = height - (i * (height / stacks));
 
-                vertices.push(x, y, h);
-                vec3.lerp(randColor, col1, col2, Math.random());
+                for (let k = 0; k < subDiv; k++) {
+                    let angle = k * 2 * Math.PI / subDiv;
+                    let x = r * Math.cos(angle);
+                    let y = r * Math.sin(angle);
 
-                vertices.push(randColor[0], randColor[1], randColor[2]);
+                    vertices.push(x, y, h);
+                    vec3.lerp(randColor, col1, col2, Math.random());
+
+                    vertices.push(randColor[0], randColor[1], randColor[2]);
+                }
             }
         }
-        */
-
-        vertices.push(0, 0, 0);
-        /* center of base */
-        vec3.lerp(randColor, col1, col2, Math.random());
-        /* linear interpolation between two colors */
-        vertices.push(randColor[0], randColor[1], randColor[2]);
 
         //Repeat steps for bottom of cylinder
         for (let k = 0; k < subDiv; k++) {
@@ -91,6 +86,12 @@ class Cylinder {
             /* the next three floats are RGB */
             vertices.push(randColor[0], randColor[1], randColor[2]);
         }
+
+        vertices.push(0, 0, 0);
+        /* center of base */
+        vec3.lerp(randColor, col1, col2, Math.random());
+        /* linear interpolation between two colors */
+        vertices.push(randColor[0], randColor[1], randColor[2]);
 
 
         /* copy the (x,y,z,r,g,b) sixtuplet into GPU buffer */
@@ -111,25 +112,35 @@ class Cylinder {
 
         // Generate index order for bottom of cylinder
         let botIndex = [];
-        botIndex.push(subDiv + 1);
-        for (let k = (2 * subDiv) + 1; k > subDiv + 1; k--)
+        let n = (stacks * subDiv) + 1;
+        botIndex.push(n + subDiv);
+        for (let k = n + (subDiv - 1); k >= n; k--)
             botIndex.push(k);
-        botIndex.push((2 * subDiv) + 1);
+        botIndex.push(n + (subDiv - 1));
+
         this.botIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.botIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(botIndex), gl.STATIC_DRAW);
 
         //Generate index for cylinder vertices
         let vertIndex = [];
-        for (let k = 1; k < subDiv + 1; k++) {
-            vertIndex.push(k);
-            vertIndex.push(k + (subDiv + 1));
-        }
-        vertIndex.push(1);
-        vertIndex.push(subDiv + 2);
+      //  for (let i = 1; i <= stacks; i++) {
+            for (let k = 1; k < (stacks * subDiv) + 1; k++) {
+                vertIndex.push(k);
+                vertIndex.push(k + subDiv);
 
-         console.log(topIndex);
-         console.log(botIndex);
+                if (k % 6 == 0) {
+                    vertIndex.push(k - (subDiv - 1));
+                    vertIndex.push(k + 1);
+                }
+            }
+       // vertIndex.push(7);
+       // vertIndex.push(14);
+
+      //  }
+
+        console.log(topIndex);
+        console.log(botIndex);
         console.log(vertIndex);
 
         this.vertIdxBuff = gl.createBuffer();
