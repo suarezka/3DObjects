@@ -129,7 +129,7 @@ class Cylinder {
                 vertIndex.push(k);
                 vertIndex.push(k + subDiv);
 
-                if (k % 6 == 0) {
+                if (k % subDiv == 0) {
                     vertIndex.push(k - (subDiv - 1));
                     vertIndex.push(k + 1);
                 }
