@@ -30,10 +30,10 @@ class Cone {
     vertices.push(randColor[0], randColor[1], randColor[2]);
 
     let r = 0;
-    let h = 0;
+    let h = height;
     for (let i = 1; i <= stacks; i++) {
-        r = r + (i * (radius / stacks));
-        h = i * (height / stacks);
+        r = i * (radius / stacks);
+        h = height - (i * (height / stacks));
 
         for (let k = 0; k < subDiv; k++) {
             let angle = k * 2 * Math.PI / subDiv;
@@ -71,12 +71,15 @@ class Cone {
 
       //Generate index for stack vertices
       let vertIndex = [];
-      for (let k = 1; k < subDiv + 1; k++) {
-          vertIndex.push(k);
-          vertIndex.push(k + (subDiv + 1));
+
+      if (stacks > 1) {
+          for (let k = 1; k <= (stacks * subDiv); k++) {
+                  vertIndex.push(k);
+                  vertIndex.push(k + subDiv);
+          }
+             // vertIndex.push();
+             // vertIndex.push(subDiv + 1);
       }
-      vertIndex.push(1);
-      vertIndex.push(subDiv + 2);
 
       this.vertIdxBuff = gl.createBuffer();
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertIdxBuff);
@@ -85,20 +88,22 @@ class Cone {
     // Generate index order for bottom of cone
     let botIndex = [];
     botIndex.push(subDiv + 1);
-    for (let k = subDiv; k >= 1; k--)
+    for (let k = (stacks * subDiv); k > (stacks * subDiv) - subDiv; k--)
       botIndex.push(k);
     botIndex.push(subDiv);
+
     this.botIdxBuff = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.botIdxBuff);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(botIndex), gl.STATIC_DRAW);
 
-
-
+      console.log(topIndex);
+      console.log(botIndex);
+      console.log(vertIndex);
 
     /* Put the indices as an array of objects. Each object has three attributes:
        primitive, buffer, and numPoints */
     this.indices = [{"primitive": gl.TRIANGLE_FAN, "buffer": this.topIdxBuff, "numPoints": topIndex.length},
-                   // {"primitive": gl.TRIANGLE_FAN, "buffer": this.botIdxBuff, "numPoints": botIndex.length},
+                    {"primitive": gl.TRIANGLE_FAN, "buffer": this.botIdxBuff, "numPoints": botIndex.length},
                     {"primitive": gl.TRIANGLE_STRIP, "buffer": this.vertIdxBuff, "numPoints": vertIndex.length}];
   }
 
