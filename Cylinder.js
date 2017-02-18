@@ -50,6 +50,26 @@ class Cylinder {
             /* the next three floats are RGB */
             vertices.push(randColor[0], randColor[1], randColor[2]);
         }
+/*
+        let r = 0;
+        let h = height;
+        for (let i = 1; i <= stacks; i++) {
+            let n = (Math.abs(radiusT - radiusB));
+            r = radiusT + (i * (n / stacks));
+            h = height - (i * (height / stacks));
+
+            for (let k = 0; k < subDiv; k++) {
+                let angle = k * 2 * Math.PI / subDiv;
+                let x = r * Math.cos(angle);
+                let y = r * Math.sin(angle);
+
+                vertices.push(x, y, h);
+                vec3.lerp(randColor, col1, col2, Math.random());
+
+                vertices.push(randColor[0], randColor[1], randColor[2]);
+            }
+        }
+        */
 
         vertices.push(0, 0, 0);
         /* center of base */
@@ -71,6 +91,7 @@ class Cylinder {
             /* the next three floats are RGB */
             vertices.push(randColor[0], randColor[1], randColor[2]);
         }
+
 
         /* copy the (x,y,z,r,g,b) sixtuplet into GPU buffer */
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vbuff);

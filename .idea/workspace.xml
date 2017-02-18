@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bfaf862b-3ad7-4675-bf15-6ff3a5dda061" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Cone.js" afterPath="$PROJECT_DIR$/Cone.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Cylinder.js" afterPath="$PROJECT_DIR$/Cylinder.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -30,21 +31,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Cone.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Cone.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Cone.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="81" column="31" lean-forward="false" selection-start-line="81" selection-start-column="31" selection-end-line="81" selection-end-column="31" />
+            <state relative-caret-position="245">
+              <caret line="94" column="8" lean-forward="false" selection-start-line="94" selection-start-column="8" selection-end-line="98" selection-end-column="41" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Cylinder.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Cylinder.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Cylinder.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="452">
-              <caret line="109" column="9" lean-forward="false" selection-start-line="109" selection-start-column="9" selection-end-line="111" selection-end-column="31" />
+            <state relative-caret-position="302">
+              <caret line="142" column="112" lean-forward="false" selection-start-line="142" selection-start-column="112" selection-end-line="142" selection-end-column="112" />
               <folding />
             </state>
           </provider>
@@ -96,11 +97,11 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Cube.js" />
-        <option value="$PROJECT_DIR$/Cylinder.js" />
         <option value="$PROJECT_DIR$/render.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/Sphere.js" />
         <option value="$PROJECT_DIR$/Cone.js" />
+        <option value="$PROJECT_DIR$/Cylinder.js" />
       </list>
     </option>
   </component>
@@ -111,8 +112,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-355" />
-    <option name="y" value="23" />
+    <option name="x" value="43" />
+    <option name="y" value="70" />
     <option name="width" value="1107" />
     <option name="height" value="729" />
   </component>
@@ -247,7 +248,7 @@
       <workItem from="1487078080875" duration="2357000" />
       <workItem from="1487090338352" duration="5809000" />
       <workItem from="1487098286180" duration="711000" />
-      <workItem from="1487431995314" duration="9970000" />
+      <workItem from="1487431995314" duration="13072000" />
     </task>
     <task id="LOCAL-00001" summary="Better working cylinder -- bottom triangle fan not working">
       <created>1487050574675</created>
@@ -260,13 +261,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31175000" />
+    <option name="totallyTimeSpent" value="34277000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-355" y="23" width="1107" height="729" extended-state="0" />
-    <editor active="true" />
+    <frame x="43" y="70" width="1107" height="729" extended-state="0" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24932249" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24932249" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287879" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287879" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -549,18 +550,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Cylinder.js">
+    <entry file="file://$PROJECT_DIR$/Cone.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="452">
-          <caret line="109" column="9" lean-forward="false" selection-start-line="109" selection-start-column="9" selection-end-line="111" selection-end-column="31" />
+        <state relative-caret-position="245">
+          <caret line="94" column="8" lean-forward="false" selection-start-line="94" selection-start-column="8" selection-end-line="98" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Cone.js">
+    <entry file="file://$PROJECT_DIR$/Cylinder.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="81" column="31" lean-forward="false" selection-start-line="81" selection-start-column="31" selection-end-line="81" selection-end-column="31" />
+        <state relative-caret-position="302">
+          <caret line="142" column="112" lean-forward="false" selection-start-line="142" selection-start-column="112" selection-end-line="142" selection-end-column="112" />
           <folding />
         </state>
       </provider>

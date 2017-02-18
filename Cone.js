@@ -78,7 +78,6 @@ class Cone {
 
         if (stacks > 1) {
             for (let k = 1; k <= subDiv; k++) {
-
                 vertIndex.push(k);
                 vertIndex.push(k + subDiv);
             }
