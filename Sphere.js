@@ -1,19 +1,17 @@
 /**
- * Created by Kaye on 2/14/17.
+ * Created by Hans Dulimarta on 2/1/17.
  */
-
-
 class Sphere {
     /**
      * Create a 3D cone with tip at the Z+ axis and base on the XY plane
      * @param {Object} gl      the current WebGL context
-     * @param {Number} height  height of cube
-     * @param {Number} subDiv  number of radial subdivision of the cube base
-     * @param {Number} stacks  number of vertical stacks of cube
+     * @param {Number} radius  radius of the cone base
+     * @param {Number} subDiv  number of radial subdivision of the cone base
+     * @param {Number} stacks  number of stacks of the sphere
      * @param {vec3}   col1    color #1 to use
      * @param {vec3}   col2    color #2 to use
      */
-    constructor(gl, height, radius, subDiv, stacks, col1, col2) {
+    constructor (gl, radius, subDiv, stacks, col1, col2) {
 
         /* if colors are undefined, generate random colors */
         if (typeof col1 === "undefined") col1 = vec3.fromValues(Math.random(), Math.random(), Math.random());
@@ -22,34 +20,34 @@ class Sphere {
         let vertices = [];
         this.vbuff = gl.createBuffer();
 
-        //Create top triangle fan (top pole)
-        vertices.push(0, 0, height);
+        /* Instead of allocating two separate JS arrays (one for position and one for color),
+         in the following loop we pack both position and color
+         so each tuple (x,y,z,r,g,b) describes the properties of a vertex
+         */
+        vertices.push(0,0,radius); /* tip of cone */
+        vec3.lerp (randColor, col1, col2, Math.random()); /* linear interpolation between two colors */
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        for (let i = (stacks * 2) - 1; i >= 0; i--) {
+            let anglePhi =  i * Math.PI / (stacks * 2);
+            for (let k = 0; k < subDiv; k++) {
+                let angle = k * 2 * Math.PI / subDiv;
+                let x = radius * Math.cos(angle) * Math.sin(anglePhi);
+                let y = radius * Math.sin(angle) * Math.sin(anglePhi);
+                let z = radius * Math.cos(anglePhi);
 
-        for (let k = 0; k <= subDiv; k++) {
-            let angle = k * 2 * Math.PI / subDiv;
-            let x = radius * Math.cos(angle);
-            let y = radius * Math.sin(angle);
+                /* the first three floats are 3D (x,y,z) position */
+                vertices.push(x, y, z);
+                /* perimeter of base */
+                vec3.lerp(randColor, col1, col2, Math.random());
+                /* linear interpolation between two colors */
+                /* the next three floats are RGB */
+                vertices.push(randColor[0], randColor[1], randColor[2]);
+            }
 
-            vertices.push(x, y, height);
-            vec3.lerp(randColor, col1, col2, Math.random());
-            /* linear interpolation between two colors */
-            /* the next three floats are RGB */
-            vertices.push(randColor[0], randColor[1], randColor[2]);
         }
-
-        vertices.push(0, 0, 0);
-        for (let k = 0; k <= subDiv; k++) {
-            let angle = k * 2 * Math.PI / subDiv;
-            let x = radius * Math.cos(angle);
-            let y = radius * Math.sin(angle);
-
-            vertices.push(x, y, 0);
-            vec3.lerp(randColor, col1, col2, Math.random());
-            /* linear interpolation between two colors */
-            /* the next three floats are RGB */
-            vertices.push(randColor[0], randColor[1], randColor[2]);
-        }
-
+        vertices.push(0,0,-radius); /* tip of cone */
+        vec3.lerp (randColor, col1, col2, Math.random()); /* linear interpolation between two colors */
+        vertices.push(randColor[0], randColor[1], randColor[2]);
 
         /* copy the (x,y,z,r,g,b) sixtuplet into GPU buffer */
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vbuff);
@@ -57,38 +55,28 @@ class Sphere {
 
         // Generate index order for top of cone
         let topIndex = [];
-
-        // CREATE LOOP TO FILL ARRAY FOR TRIANGLE FAN
-         topIndex.push(0);
-         for (let k = 1; k <= subDiv; k++) {
+        //topIndex.push(0);
+        for (let k = 0; k < (subDiv * 8); k++)
             topIndex.push(k);
-         }
-         topIndex.push(1);
-
+        topIndex.push(1);
         this.topIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.topIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(topIndex), gl.STATIC_DRAW);
 
-        // Generate index order for bottom of cone
-        let botIndex = [];
-        botIndex.push(subDiv + 1);
-        for (let k = subDiv + 2; k <= (2 * subDiv) + 1; k++)
-            botIndex.push(k);
-        botIndex.push(subDiv + 1);
-
-        this.botIdxBuff = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.botIdxBuff);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(botIndex), gl.STATIC_DRAW);
-
-        console.log(vertices);
-        console.log(topIndex);
-        console.log(botIndex);
-
+        // // Generate index order for bottom of cone
+        // let botIndex = [];
+        // botIndex.push(subDiv + 1);
+        // for (let k = subDiv; k >= 1; k--)
+        //     botIndex.push(k);
+        // botIndex.push(subDiv);
+        // this.botIdxBuff = gl.createBuffer();
+        // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.botIdxBuff);
+        // gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(botIndex), gl.STATIC_DRAW);
 
         /* Put the indices as an array of objects. Each object has three attributes:
          primitive, buffer, and numPoints */
-        this.indices = [{"primitive": gl.TRIANGLE_FAN, "buffer": this.topIdxBuff, "numPoints": topIndex.length},
-            {"primitive": gl.TRIANGLE_FAN, "buffer": this.botIdxBuff, "numPoints": botIndex.length}];
+        this.indices = [{"primitive": gl.POINT, "buffer": this.topIdxBuff, "numPoints": topIndex.length}];
+        //{"primitive": gl.POINT, "buffer": this.botIdxBuff, "numPoints": botIndex.length}];
     }
 
     /**
@@ -107,10 +95,8 @@ class Sphere {
 
         /* with the "packed layout"  (x,y,z,r,g,b),
          the stride distance between one group to the next is 24 bytes */
-        gl.vertexAttribPointer(vertexAttr, 3, gl.FLOAT, false, 24, 0);
-        /* (x,y,z) begins at offset 0 */
-        gl.vertexAttribPointer(colorAttr, 3, gl.FLOAT, false, 24, 12);
-        /* (r,g,b) begins at offset 12 */
+        gl.vertexAttribPointer(vertexAttr, 3, gl.FLOAT, false, 24, 0); /* (x,y,z) begins at offset 0 */
+        gl.vertexAttribPointer(colorAttr, 3, gl.FLOAT, false, 24, 12); /* (r,g,b) begins at offset 12 */
 
         for (let k = 0; k < this.indices.length; k++) {
             let obj = this.indices[k];
