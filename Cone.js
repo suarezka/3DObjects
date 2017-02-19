@@ -51,15 +51,12 @@ class Cone {
                 vertices.push(randColor[0], randColor[1], randColor[2]);
             }
         }
+
+        //Center of base last vertex
         vertices.push(0, 0, 0);
-        /* center of base */
         vec3.lerp(randColor, col1, col2, Math.random());
-        /* linear interpolation between two colors */
         vertices.push(randColor[0], randColor[1], randColor[2]);
 
-        console.log(vertices);
-
-        /* copy the (x,y,z,r,g,b) sixtuplet into GPU buffer */
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vbuff);
         gl.bufferData(gl.ARRAY_BUFFER, Float32Array.from(vertices), gl.STATIC_DRAW);
 
@@ -75,17 +72,17 @@ class Cone {
 
         //Generate index for stack vertices
         let vertIndex = [];
-
         if (stacks > 1) {
-            for (let k = 1; k <= subDiv; k++) {
+            for (let k = 1; k < (stacks * subDiv) + 1; k++) {
                 vertIndex.push(k);
                 vertIndex.push(k + subDiv);
+
+                 if (k % subDiv == 0) {
+                   vertIndex.push(k - (subDiv - 1));
+                   vertIndex.push(k + 1);
+                 }
             }
-
-            vertIndex.push(1);
-            vertIndex.push(subDiv + 1);
         }
-
 
         this.vertIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertIdxBuff);
