@@ -73,7 +73,9 @@ class Cone {
         //Generate index for stack vertices
         let vertIndex = [];
         if (stacks > 1) {
-            for (let k = 1; k < (stacks * subDiv) + 1; k++) {
+            //Top cone is 1st subdivision
+            let s = stacks - 1;
+            for (let k = 1; k < (s * subDiv) + 1; k++) {
                 vertIndex.push(k);
                 vertIndex.push(k + subDiv);
 
