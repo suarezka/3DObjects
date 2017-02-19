@@ -120,15 +120,14 @@ function createObject() {
             break;
 
         case 3:
-            let height3 = document.getElementById("sphere1-height").valueAsNumber;
             let radius3 = document.getElementById("sphere1-radius").valueAsNumber;
-            let lat = document.getElementById("sphere1-lat").valueAsNumber;
-            let long = document.getElementById("sphere1-long").valueAsNumber;
+            let subDiv3 = document.getElementById("sphere1-subdiv").valueAsNumber;
+            let stacks3 = document.getElementById("sphere1-stacks").valueAsNumber;
 
-            console.log("Sphere height: " + height3 + "radius: " + radius3 +
-                " lat: " + lat + " long:" + long);
+            console.log("Sphere radius: " + radius3 + "long: " + subDiv3 +
+                " lat: " + stacks3);
 
-            obj = new Sphere(gl, height3, radius3, lat, long);
+            obj = new Sphere(gl, radius3, subDiv3, stacks3);
             break;
 
     }
