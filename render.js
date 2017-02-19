@@ -129,7 +129,17 @@ function createObject() {
 
             obj = new Sphere(gl, radius3, subDiv3, stacks3);
             break;
+        case 5:
+            let lRadius = document.getElementById("torus-lRadius").valueAsNumber;
+            let sRadius = document.getElementById("torus-sRadius").valueAsNumber;
+            let subDiv5 = document.getElementById("torus-subdiv").valueAsNumber;
+            let stacks5 = document.getElementById("torus-stacks").valueAsNumber;
 
+            console.log("Torus large radius: " + lRadius + " small radius: " + sRadius +
+                " sub division: " + subDiv5 + " stacks: " + stacks5);
+
+            obj = new Torus(gl, lRadius, sRadius, subDiv5, stacks5);
+            break;
     }
 }
 
