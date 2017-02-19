@@ -131,6 +131,17 @@ function createObject() {
             obj = new Sphere(gl, radius3, subDiv3, stacks3);
             break;
 
+        case 6:
+            let height6 = document.getElementById("ring-height").valueAsNumber;
+            let radiusInner = document.getElementById("ring-radiusInner").valueAsNumber;
+            let radiusOuter = document.getElementById("ring-radiusOuter").valueAsNumber;
+            let subDiv6 = document.getElementById("ring-subdiv").valueAsNumber;
+            let stacks6 = document.getElementById("ring-stacks").valueAsNumber;
+            console.log("Ring radius: " + radiusInner + " " + radiusOuter + " height: "
+                + height6 + " sub division: " + subDiv6 + " stacks: " + stacks6);
+            obj = new Ring(gl, radiusInner, radiusOuter, height6, subDiv6, stacks6);
+            break;
+
     }
 }
 

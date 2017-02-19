@@ -1,21 +1,22 @@
 /**
- * Created by Kaye on 2/13/17.
+ * Created by Kaye on 2/19/17.
  * Created by Hans Dulimarta on 2/1/17.
  */
 
-class Cylinder {
+
+class Ring {
     /**
      * Create a 3D cylinder with tip at the Z+ axis and base on the XY plane
-     * @param {Object} gl      the current WebGL context
-     * @param {Number} radiusT  radius of the top
-     * @param {Number} radiusB  radius of the bottom
-     * @param {Number} height  height of the cone
-     * @param {Number} subDiv  number of radial subdivision of the cone base
-     * @param {Number} stacks  number of vertical stacks of cone
-     * @param {vec3}   col1    color #1 to use
-     * @param {vec3}   col2    color #2 to use
+     * @param {Object} gl           the current WebGL context
+     * @param {Number} radiusInner  radius of the top
+     * @param {Number} radiusOuter  radius of the bottom
+     * @param {Number} height       height of the cone
+     * @param {Number} subDiv       number of radial subdivision of the cone base
+     * @param {Number} stacks       number of vertical stacks of cone
+     * @param {vec3}   col1         color #1 to use
+     * @param {vec3}   col2         color #2 to use
      */
-    constructor(gl, radiusT, radiusB, height, subDiv, stacks, col1, col2) {
+    constructor(gl, radiusInner, radiusOuter, height, subDiv, stacks, col1, col2) {
 
         /* if colors are undefined, generate random colors */
         if (typeof col1 === "undefined") col1 = vec3.fromValues(Math.random(), Math.random(), Math.random());
@@ -24,31 +25,21 @@ class Cylinder {
         let vertices = [];
         this.vbuff = gl.createBuffer();
 
-        //VERTICAL INTERVAL OF STACKS
-        let div = height / stacks;
-
-        /* Instead of allocating two separate JS arrays (one for position and one for color),
-         in the following loop we pack both position and color
-         so each tuple (x,y,z,r,g,b) describes the properties of a vertex
-         */
-        vertices.push(0, 0, height);
-        /* tip of cone */
-        vec3.lerp(randColor, col1, col2, Math.random());
-        /* linear interpolation between two colors */
-        vertices.push(randColor[0], randColor[1], randColor[2]);
-
-        //Top of cyclinder
+        //Top of ring
         for (let k = 0; k < subDiv; k++) {
             let angle = k * 2 * Math.PI / subDiv;
-            let x = radiusT * Math.cos(angle);
-            let y = radiusT * Math.sin(angle);
+            let x = radiusInner * Math.cos(angle);
+            let y = radiusInner * Math.sin(angle);
 
-            /* the first three floats are 3D (x,y,z) position */
+            let x2 = radiusOuter * Math.cos(angle);
+            let y2 = radiusOuter * Math.sin(angle);
+
             vertices.push(x, y, height);
-            /* perimeter of base */
             vec3.lerp(randColor, col1, col2, Math.random());
-            /* linear interpolation between two colors */
-            /* the next three floats are RGB */
+            vertices.push(randColor[0], randColor[1], randColor[2]);
+
+            vertices.push(x2, y2, height);
+            vec3.lerp(randColor, col1, col2, Math.random());
             vertices.push(randColor[0], randColor[1], randColor[2]);
         }
 
@@ -74,26 +65,23 @@ class Cylinder {
             }
         }
 
-        //Repeat steps for bottom of cylinder
+        //Bottom of ring
         for (let k = 0; k < subDiv; k++) {
             let angle = k * 2 * Math.PI / subDiv;
-            let x = radiusB * Math.cos(angle);
-            let y = radiusB * Math.sin(angle);
+            let x = radiusInner * Math.cos(angle);
+            let y = radiusInner * Math.sin(angle);
 
-            /* the first three floats are 3D (x,y,z) position */
+            let x2 = radiusOuter * Math.cos(angle);
+            let y2 = radiusOuter * Math.sin(angle);
+
             vertices.push(x, y, 0);
-            /* perimeter of base */
             vec3.lerp(randColor, col1, col2, Math.random());
-            /* linear interpolation between two colors */
-            /* the next three floats are RGB */
+            vertices.push(randColor[0], randColor[1], randColor[2]);
+
+            vertices.push(x2, y2, 0);
+            vec3.lerp(randColor, col1, col2, Math.random());
             vertices.push(randColor[0], randColor[1], randColor[2]);
         }
-
-        vertices.push(0, 0, 0);
-        /* center of base */
-        vec3.lerp(randColor, col1, col2, Math.random());
-        /* linear interpolation between two colors */
-        vertices.push(randColor[0], randColor[1], randColor[2]);
 
 
         /* copy the (x,y,z,r,g,b) sixtuplet into GPU buffer */
@@ -104,52 +92,82 @@ class Cylinder {
 
         // Generate index order for top of cylinder
         let topIndex = [];
-        topIndex.push(0);
-        for (let k = 1; k <= subDiv; k++)
+        for (let k = 0; k < 2 * subDiv; k++)
             topIndex.push(k);
+        topIndex.push(0);
         topIndex.push(1);
+
         this.topIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.topIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(topIndex), gl.STATIC_DRAW);
 
         // Generate index order for bottom of cylinder
+        /*
         let botIndex = [];
-        let n = (stacks * subDiv) + 1;
-        botIndex.push(n + subDiv);
-        for (let k = n + (subDiv - 1); k >= n; k--)
+        let n = (stacks * (4 * subDiv)) - 1;
+        botIndex.push(n);
+        for (let k = n - 1; k > n - (stacks * (2 * subDiv)); k--)
             botIndex.push(k);
-        botIndex.push(n + (subDiv - 1));
+        botIndex.push(n);
+        botIndex.push(n - 1);
+        */
+
+        let botIndex = [];
+        let n = (stacks * (4 * subDiv));
+        botIndex.push(n - (stacks * (2 * subDiv)));
+        for (let k = (n - (stacks * (2 * subDiv)) + 1); k < n; k++)
+            botIndex.push(k);
+        botIndex.push(n - (stacks * (2 * subDiv)));
+        botIndex.push((n - (stacks * (2 * subDiv))) + 1);
+
 
         this.botIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.botIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(botIndex), gl.STATIC_DRAW);
 
         //Generate index for cylinder vertices
-        let vertIndex = [];
-        for (let k = 1; k < (stacks * subDiv) + 1; k++) {
-            vertIndex.push(k);
-            vertIndex.push(k + subDiv);
-
-            if (k % subDiv == 0) {
-                vertIndex.push(k - (subDiv - 1));
-                vertIndex.push(k + 1);
+        let vertIndexInner = [];
+        //Inner walls (evens)
+        for (let k = 0; k < (2 * (stacks * subDiv)); k++) {
+            if (k % 2 == 0) {
+                vertIndexInner.push(k);
+                vertIndexInner.push(k + (2 * subDiv));
             }
         }
+        vertIndexInner.push(0);
+        vertIndexInner.push((2 * subDiv));
+
+        this.vertIdxBuffInner = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertIdxBuffInner);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(vertIndexInner), gl.STATIC_DRAW);
+
+        //Outer walls (odds)
+        let vertIndexOuter = [];
+        for (let k = 0; k < (2 * (stacks * subDiv)); k++) {
+            if (k % 2 != 0) {
+                vertIndexOuter.push(k);
+                vertIndexOuter.push(k + (2 * subDiv));
+            }
+        }
+        vertIndexOuter.push(1);
+        vertIndexOuter.push((2 * subDiv) + 1);
+
+        this.vertIdxBuffOuter = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertIdxBuffOuter);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(vertIndexOuter), gl.STATIC_DRAW);
 
         console.log(topIndex);
         console.log(botIndex);
-        console.log(vertIndex);
-
-        this.vertIdxBuff = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertIdxBuff);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(vertIndex), gl.STATIC_DRAW);
+        console.log(vertIndexInner);
+        console.log(vertIndexOuter);
 
 
         /* Put the indices as an array of objects. Each object has three attributes:
          primitive, buffer, and numPoints */
-        this.indices = [{"primitive": gl.TRIANGLE_FAN, "buffer": this.topIdxBuff, "numPoints": topIndex.length},
-                        {"primitive": gl.TRIANGLE_FAN, "buffer": this.botIdxBuff, "numPoints": botIndex.length},
-                        {"primitive": gl.TRIANGLE_STRIP, "buffer": this.vertIdxBuff, "numPoints": vertIndex.length}];
+        this.indices = [{"primitive": gl.TRIANGLE_STRIP, "buffer": this.topIdxBuff, "numPoints": topIndex.length},
+            {"primitive": gl.TRIANGLE_STRIP, "buffer": this.botIdxBuff, "numPoints": botIndex.length},
+            {"primitive": gl.TRIANGLE_STRIP, "buffer": this.vertIdxBuffInner, "numPoints": vertIndexInner.length},
+            {"primitive": gl.TRIANGLE_STRIP, "buffer": this.vertIdxBuffOuter, "numPoints": vertIndexOuter.length}];
     }
 
     /**
