@@ -22,26 +22,76 @@ class Cube {
         let vertices = [];
         this.vbuff = gl.createBuffer();
 
-        //VERTICAL INTERVAL OF STACKS
-        let div = height / stacks;
+        //Cube always has 4 horizontal subdivisions
+        subDiv = 4;
 
-        for (let k = 0; k < 2 * subDiv; k++) {
-            let angle = k * 2 * Math.PI / subDiv;
-            let x = radius * Math.cos(angle);
-            let y = radius * Math.sin(angle);
+        //CUBE MORE THAN 8 POINTS
+        if (stacks > 1) {
+            vertices.push(0, 0, height);
+            vec3.lerp(randColor, col1, col2, Math.random());
+            vertices.push(randColor[0], randColor[1], randColor[2]);
 
-            if (k >= subDiv) {
+            //TOP VERTICES
+            for (let k = 0; k < subDiv; k++) {
+                let angle = k * 2 * Math.PI / subDiv;
+                let x = radius * Math.cos(angle);
+                let y = radius * Math.sin(angle);
+
                 vertices.push(x, y, height);
-            } else {
-                /* the first three floats are 3D (x,y,z) position */
-                vertices.push(x, y, 0);
-                /* perimeter of base */
+
+                vec3.lerp(randColor, col1, col2, Math.random());
+                vertices.push(randColor[0], randColor[1], randColor[2]);
             }
 
+            //Middle subdivisions
+            let h = height;
+            for (let i = 1; i < stacks; i++) {
+                h = height - (i * (height / stacks));
+
+                for (let k = 0; k < subDiv; k++) {
+                    let angle = k * 2 * Math.PI / subDiv;
+                    let x = radius * Math.cos(angle);
+                    let y = radius * Math.sin(angle);
+
+                    vertices.push(x, y, h);
+
+                    vec3.lerp(randColor, col1, col2, Math.random());
+                    vertices.push(randColor[0], randColor[1], randColor[2]);
+                }
+            }
+
+            //Bottom of cube
+            for (let k = 0; k < subDiv; k++) {
+                let angle = k * 2 * Math.PI / subDiv;
+                let x = radius * Math.cos(angle);
+                let y = radius * Math.sin(angle);
+
+                vertices.push(x, y, 0);
+
+                vec3.lerp(randColor, col1, col2, Math.random());
+                vertices.push(randColor[0], randColor[1], randColor[2]);
+            }
+
+            vertices.push(0, 0, 0);
             vec3.lerp(randColor, col1, col2, Math.random());
-            /* linear interpolation between two colors */
-            /* the next three floats are RGB */
             vertices.push(randColor[0], randColor[1], randColor[2]);
+
+        } else {
+            for (let k = 0; k < 2 * subDiv; k++) {
+                let angle = k * 2 * Math.PI / subDiv;
+                let x = radius * Math.cos(angle);
+                let y = radius * Math.sin(angle);
+
+                if (k >= subDiv) {
+                    vertices.push(x, y, height);
+
+                } else {
+                    vertices.push(x, y, 0);
+                }
+
+                vec3.lerp(randColor, col1, col2, Math.random());
+                vertices.push(randColor[0], randColor[1], randColor[2]);
+            }
         }
 
         /* copy the (x,y,z,r,g,b) sixtuplet into GPU buffer */
@@ -49,38 +99,69 @@ class Cube {
         gl.bufferData(gl.ARRAY_BUFFER, Float32Array.from(vertices), gl.STATIC_DRAW);
 
         // Generate index order for top of cone
-        let topIndex = [4, 0, 1, 5, 6, 7, 3, 0];
+        //If only 1 subdivision
+        let topIndex = [];
+        if (stacks == 1)
+            topIndex = [4, 0, 1, 5, 6, 7, 3, 0];
 
-        /* CREATE LOOP TO FILL ARRAY FOR TRIANGLE FAN //TODO:
-        topIndex.push(subDiv);
-        for (let k = 0; k < 2 * subDiv; k++) {
-
+        //Create flat triangle fan
+        else {
+            topIndex.push(0);
+            for (let k = 1; k <= subDiv; k++)
+                topIndex.push(k);
+            topIndex.push(1);
         }
-        */
 
         this.topIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.topIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(topIndex), gl.STATIC_DRAW);
 
         // Generate index order for bottom of cone
-        let botIndex = [2, 3, 7, 6, 5, 1, 0, 3];
+        let botIndex = [];
+        if (stacks == 1)
+            botIndex = [2, 3, 7, 6, 5, 1, 0, 3];
 
-        /* CREATE LOOP TO FILL ARRAY FOR TRIANGLE FAN //TODO: */
-
+        //Create flat triangle fan
+        else {
+            let n = (stacks * subDiv) + 1;
+            botIndex.push(n + subDiv);
+            for (let k = n + (subDiv - 1); k >= n; k--)
+                botIndex.push(k);
+            botIndex.push(n + (subDiv - 1));
+        }
 
         this.botIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.botIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(botIndex), gl.STATIC_DRAW);
 
+        //Fill vertex array if more than 1 stack
+        let vertIndex = [];
+        if (stacks > 1) {
+            for (let k = 1; k < (stacks * subDiv) + 1; k++) {
+                vertIndex.push(k);
+                vertIndex.push(k + subDiv);
+
+                if (k % subDiv == 0) {
+                    vertIndex.push(k - (subDiv - 1));
+                    vertIndex.push(k + 1);
+                }
+            }
+        }
+
+        this.vertIdxBuff = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertIdxBuff);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(vertIndex), gl.STATIC_DRAW);
+
         console.log(vertices);
         console.log(topIndex);
         console.log(botIndex);
-
+        console.log(vertIndex);
 
         /* Put the indices as an array of objects. Each object has three attributes:
          primitive, buffer, and numPoints */
         this.indices = [{"primitive": gl.TRIANGLE_FAN, "buffer": this.topIdxBuff, "numPoints": topIndex.length},
-                        {"primitive": gl.TRIANGLE_FAN, "buffer": this.botIdxBuff, "numPoints": botIndex.length}];
+                        {"primitive": gl.TRIANGLE_FAN, "buffer": this.botIdxBuff, "numPoints": botIndex.length},
+                        {"primitive": gl.TRIANGLE_STRIP, "buffer": this.vertIdxBuff, "numPoints": vertIndex.length}];
     }
 
     /**

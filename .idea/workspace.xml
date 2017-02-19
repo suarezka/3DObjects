@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="bfaf862b-3ad7-4675-bf15-6ff3a5dda061" name="Default" comment="" />
+=======
     <list default="true" id="bfaf862b-3ad7-4675-bf15-6ff3a5dda061" name="Default" comment="">
 <<<<<<< HEAD
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -11,6 +14,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Cylinder.js" afterPath="$PROJECT_DIR$/Cylinder.js" />
 >>>>>>> origin/master
     </list>
+>>>>>>> origin/master
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -46,11 +50,16 @@
         <entry file="file://$PROJECT_DIR$/Cone.js">
           <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
+            <state relative-caret-position="305">
+              <caret line="98" column="41" lean-forward="true" selection-start-line="98" selection-start-column="41" selection-end-line="98" selection-end-column="41" />
+=======
+<<<<<<< HEAD
             <state relative-caret-position="1598">
               <caret line="94" column="26" lean-forward="false" selection-start-line="94" selection-start-column="26" selection-end-line="94" selection-end-column="26" />
 =======
             <state relative-caret-position="335">
               <caret line="96" column="28" lean-forward="false" selection-start-line="96" selection-start-column="28" selection-end-line="96" selection-end-column="28" />
+>>>>>>> origin/master
 >>>>>>> origin/master
               <folding />
             </state>
@@ -261,11 +270,15 @@
       <workItem from="1487090338352" duration="5809000" />
       <workItem from="1487098286180" duration="711000" />
 <<<<<<< HEAD
+      <workItem from="1487431995314" duration="22026000" />
+=======
+<<<<<<< HEAD
       <workItem from="1487431995314" duration="20244000" />
       <workItem from="1487459610628" duration="2441000" />
       <workItem from="1487462484239" duration="168000" />
 =======
       <workItem from="1487431995314" duration="20694000" />
+>>>>>>> origin/master
 >>>>>>> origin/master
     </task>
     <task id="LOCAL-00001" summary="Better working cylinder -- bottom triangle fan not working">
@@ -280,6 +293,15 @@
   </component>
   <component name="TimeTrackingManager">
 <<<<<<< HEAD
+    <option name="totallyTimeSpent" value="43231000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="43" y="70" width="1107" height="729" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24932249" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="44058000" />
 =======
     <option name="totallyTimeSpent" value="41899000" />
@@ -290,6 +312,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24895833" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> origin/master
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287879" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287879" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -695,6 +718,10 @@
     <entry file="file://$PROJECT_DIR$/Cone.js">
       <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
+        <state relative-caret-position="305">
+          <caret line="98" column="41" lean-forward="true" selection-start-line="98" selection-start-column="41" selection-end-line="98" selection-end-column="41" />
+=======
+<<<<<<< HEAD
         <state relative-caret-position="2244">
           <caret line="132" column="53" lean-forward="false" selection-start-line="132" selection-start-column="53" selection-end-line="132" selection-end-column="53" />
 =======
@@ -717,6 +744,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="544">
           <caret line="47" column="27" lean-forward="false" selection-start-line="47" selection-start-column="27" selection-end-line="47" selection-end-column="27" />
+>>>>>>> origin/master
           <folding />
         </state>
       </provider>

@@ -51,6 +51,7 @@ class Cylinder {
             vertices.push(randColor[0], randColor[1], randColor[2]);
         }
 
+        //More than 1 vertical subdivision
         if (stacks > 1) {
             let r = 0;
             let h = height;
@@ -124,20 +125,15 @@ class Cylinder {
 
         //Generate index for cylinder vertices
         let vertIndex = [];
-      //  for (let i = 1; i <= stacks; i++) {
-            for (let k = 1; k < (stacks * subDiv) + 1; k++) {
-                vertIndex.push(k);
-                vertIndex.push(k + subDiv);
+        for (let k = 1; k < (stacks * subDiv) + 1; k++) {
+            vertIndex.push(k);
+            vertIndex.push(k + subDiv);
 
-                if (k % subDiv == 0) {
-                    vertIndex.push(k - (subDiv - 1));
-                    vertIndex.push(k + 1);
-                }
+            if (k % subDiv == 0) {
+                vertIndex.push(k - (subDiv - 1));
+                vertIndex.push(k + 1);
             }
-       // vertIndex.push(7);
-       // vertIndex.push(14);
-
-      //  }
+        }
 
         console.log(topIndex);
         console.log(botIndex);
