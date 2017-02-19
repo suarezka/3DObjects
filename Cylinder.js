@@ -125,15 +125,15 @@ class Cylinder {
 
         //Generate index for cylinder vertices
         let vertIndex = [];
-            for (let k = 1; k < (stacks * subDiv) + 1; k++) {
-                vertIndex.push(k);
-                vertIndex.push(k + subDiv);
+        for (let k = 1; k < (stacks * subDiv) + 1; k++) {
+            vertIndex.push(k);
+            vertIndex.push(k + subDiv);
 
-                if (k % subDiv == 0) {
-                    vertIndex.push(k - (subDiv - 1));
-                    vertIndex.push(k + 1);
-                }
+            if (k % subDiv == 0) {
+                vertIndex.push(k - (subDiv - 1));
+                vertIndex.push(k + 1);
             }
+        }
 
         console.log(topIndex);
         console.log(botIndex);
