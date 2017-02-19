@@ -130,7 +130,13 @@ function createObject() {
 
             obj = new Sphere(gl, radius3, subDiv3, stacks3);
             break;
+        case 5:
+            let lRadius = document.getElementById("torus-lRadius").valueAsNumber;
+            let sRadius = document.getElementById("torus-sRadius").valueAsNumber;
+            let subDiv5 = document.getElementById("torus-subdiv").valueAsNumber;
+            let stacks5 = document.getElementById("torus-stacks").valueAsNumber;
 
+<<<<<<< HEAD
         case 6:
             let height6 = document.getElementById("ring-height").valueAsNumber;
             let radiusInner = document.getElementById("ring-radiusInner").valueAsNumber;
@@ -142,6 +148,13 @@ function createObject() {
             obj = new Ring(gl, radiusInner, radiusOuter, height6, subDiv6, stacks6);
             break;
 
+=======
+            console.log("Torus large radius: " + lRadius + " small radius: " + sRadius +
+                " sub division: " + subDiv5 + " stacks: " + stacks5);
+
+            obj = new Torus(gl, lRadius, sRadius, subDiv5, stacks5);
+            break;
+>>>>>>> origin/master
     }
 }
 
