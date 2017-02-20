@@ -111,13 +111,11 @@ function createObject() {
         case 2:
             let height2 = document.getElementById("cube-height").valueAsNumber;
             let radius2 = document.getElementById("cube-radius").valueAsNumber;
-            let subDiv2 = document.getElementById("cube-subdiv").valueAsNumber;
             let stacks2 = document.getElementById("cube-stacks").valueAsNumber;
 
-            console.log("Cube height: " + height2 + "radius: " + radius2 +
-                " sub division: " + subDiv2 + "stacks" + stacks2);
+            console.log("Cube height: " + height2 + "radius: " + radius2 + "stacks" + stacks2);
 
-            obj = new Cube(gl, height2, radius2, subDiv2, stacks2);
+            obj = new Cube(gl, height2, radius2, stacks2);
             break;
 
         case 3:

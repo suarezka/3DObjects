@@ -14,7 +14,7 @@ class Cube {
      * @param {vec3}   col1    color #1 to use
      * @param {vec3}   col2    color #2 to use
      */
-    constructor(gl, height, radius, subDiv, stacks, col1, col2) {
+    constructor(gl, height, radius, stacks, col1, col2) {
 
         /* if colors are undefined, generate random colors */
         if (typeof col1 === "undefined") col1 = vec3.fromValues(Math.random(), Math.random(), Math.random());
@@ -24,7 +24,7 @@ class Cube {
         this.vbuff = gl.createBuffer();
 
         //Cube always has 4 horizontal subdivisions
-        subDiv = 4;
+        let subDiv = 4;
 
         //CUBE MORE THAN 8 POINTS
         if (stacks > 1) {
