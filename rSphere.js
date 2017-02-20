@@ -40,14 +40,29 @@ class rSphere {
         //let B = vec3.push(radius, radius, radius);
         //let C = vec3.push(radius, radius, radius);
 
-        function tri(N,a,b,c,na,nb,nc) {
-
+        function tri(N,ax,ay,az,bx,by,bz,cx,cy,cz,na,nb,nc) {
             if(N == 0) {
-                finalIndex.push(na,nb,nc);
+                return;
             } else {
-                let m1 = 0.5 *
+                let m1x = 0.5 * (ax + bx);
+                let m1y = 0.5 * (ay + by);
+                let m1z = 0.5 * (az + bz);
+                let m2x = 0.5 * (bx + cx);
+                let m2y = 0.5 * (by + cy);
+                let m2z = 0.5 * (bz + cz);
+                let m3x = 0.5 * (ax + cx);
+                let m3y = 0.5 * (ay + cy);
+                let m3z = 0.5 * (az + cz);
+                vertices.push(m1x, m1y, m1z);
+                vertices.push(m2x, m2y, m2z);
+                vertices.push(m3x, m3y, m3z);
+                tri(N - 1, ax, ay, az, m1x, m1y, m1z, m3x, m3y, m3z, na+4, nb+4, nc+4);
+                tri(N - 1, bx, by, bz, m1x, m1y, m1z, m3x, m3y, m3z, na+4, nb+4, nc+4);
+                tri(N - 1, cx, cy, cz, m1x, m1y, m1z, m3x, m3y, m3z, na+4, nb+4, nc+4);
             }
         }
+
+        tri(subDiv, radius, radius, radius, -radius, -radius, radius, -radius, radius, -radius, 0, 1, 2);
 
         /* copy the (x,y,z,r,g,b) sixtuplet into GPU buffer */
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vbuff);
@@ -55,12 +70,13 @@ class rSphere {
 
         // Generate index order for top of sphere
         let topIndex = [];
-        topIndex.push(0);
-        //for (let k = 1; k <= subDiv; k++)
-        //    topIndex.push(k);
-        topIndex.push(1);
-        topIndex.push(2);
-        topIndex.push(3);
+        //topIndex.push(0);
+        for (let k = 0; k <= 20; k++)
+            topIndex.push(k);
+        //topIndex.push(1);
+        //topIndex.push(2);
+        //topIndex.push(3);
+        //topIndex.push(4);
         this.topIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.topIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(topIndex), gl.STATIC_DRAW);
