@@ -45,21 +45,24 @@ class Ring {
 
         //More than 1 vertical subdivision
         if (stacks > 1) {
-            let r = 0;
             let h = height;
             for (let i = 1; i < stacks; i++) {
-                let n = (Math.abs(radiusT - radiusB));
-                r = radiusT + (i * (n / stacks));
                 h = height - (i * (height / stacks));
 
                 for (let k = 0; k < subDiv; k++) {
                     let angle = k * 2 * Math.PI / subDiv;
-                    let x = r * Math.cos(angle);
-                    let y = r * Math.sin(angle);
+                    let x = radiusInner * Math.cos(angle);
+                    let y = radiusInner * Math.sin(angle);
+
+                    let x2 = radiusOuter * Math.cos(angle);
+                    let y2 = radiusOuter * Math.sin(angle);
 
                     vertices.push(x, y, h);
                     vec3.lerp(randColor, col1, col2, Math.random());
+                    vertices.push(randColor[0], randColor[1], randColor[2]);
 
+                    vertices.push(x2, y2, h);
+                    vec3.lerp(randColor, col1, col2, Math.random());
                     vertices.push(randColor[0], randColor[1], randColor[2]);
                 }
             }
@@ -113,12 +116,12 @@ class Ring {
         */
 
         let botIndex = [];
-        let n = (stacks * (4 * subDiv));
-        botIndex.push(n - (stacks * (2 * subDiv)));
-        for (let k = (n - (stacks * (2 * subDiv)) + 1); k < n; k++)
+        let n = stacks * (2 * subDiv);
+        botIndex.push(n);
+        for (let k = n + 1; k < (n + (2 * subDiv)); k++)
             botIndex.push(k);
-        botIndex.push(n - (stacks * (2 * subDiv)));
-        botIndex.push((n - (stacks * (2 * subDiv))) + 1);
+        botIndex.push(n);
+        botIndex.push(n + 1);
 
 
         this.botIdxBuff = gl.createBuffer();
@@ -128,14 +131,36 @@ class Ring {
         //Generate index for cylinder vertices
         let vertIndexInner = [];
         //Inner walls (evens)
-        for (let k = 0; k < (2 * (stacks * subDiv)); k++) {
-            if (k % 2 == 0) {
-                vertIndexInner.push(k);
-                vertIndexInner.push(k + (2 * subDiv));
+
+        if (stacks > 1) {
+            for (let k = 0; k < (2 * (stacks * subDiv)); k++) {
+                if (k % (2 * subDiv) == 0 && k != 0) {
+                    vertIndexInner.push(k - (2 * subDiv));
+                    vertIndexInner.push(k);
+
+                    vertIndexInner.push(k);
+                    vertIndexInner.push(k + (2 * subDiv));
+
+                } else if (k % 2 == 0) {
+                    vertIndexInner.push(k);
+                    vertIndexInner.push(k + (2 * subDiv));
+                }
+
             }
+            vertIndexInner.push((stacks * subDiv));
+            vertIndexInner.push((stacks * (stacks * subDiv)));
+
+        } else {
+            for (let k = 0; k < (2 * subDiv); k++) {
+                if (k % 2 == 0) {
+                    vertIndexInner.push(k);
+                    vertIndexInner.push(k + (2 * subDiv));
+                }
+            }
+
+            vertIndexInner.push(0);
+            vertIndexInner.push(2 * subDiv);
         }
-        vertIndexInner.push(0);
-        vertIndexInner.push((2 * subDiv));
 
         this.vertIdxBuffInner = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertIdxBuffInner);
@@ -143,14 +168,30 @@ class Ring {
 
         //Outer walls (odds)
         let vertIndexOuter = [];
-        for (let k = 0; k < (2 * (stacks * subDiv)); k++) {
-            if (k % 2 != 0) {
-                vertIndexOuter.push(k);
-                vertIndexOuter.push(k + (2 * subDiv));
+
+        if (stacks > 1) {
+            for (let k = 0; k < (2 * (stacks * subDiv)) + 1; k++) {
+                if (k % (2 * subDiv) == 0 && k != 0) {
+                    vertIndexOuter.push(k - ((2 * subDiv) - 1));
+                    vertIndexOuter.push(k + 1);
+
+                } else if (k % 2 != 0) {
+                    vertIndexOuter.push(k);
+                    vertIndexOuter.push(k + (2 * subDiv));
+                }
             }
+        } else {
+            for (let k = 0; k < (2 * (stacks * subDiv)) + 1; k++) {
+               if (k % 2 != 0) {
+                    vertIndexOuter.push(k);
+                    vertIndexOuter.push(k + (2 * subDiv));
+               }
+            }
+
+            vertIndexOuter.push(1);
+            vertIndexOuter.push((2 * subDiv) + 1);
         }
-        vertIndexOuter.push(1);
-        vertIndexOuter.push((2 * subDiv) + 1);
+
 
         this.vertIdxBuffOuter = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertIdxBuffOuter);
