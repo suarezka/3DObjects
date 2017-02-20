@@ -47,10 +47,12 @@ class Torus {
 
         // Generate index order for top of sphere
         let ringIndex = [];
-        for (let k = 0; k < (subDiv * stacks); k++) {
+        for (let k = 0; k < stacks * subDiv; k++) {
             ringIndex.push(k);
             ringIndex.push(k + subDiv);
         }
+        ringIndex.push(0);
+        ringIndex.push(subDiv);
         this.ringIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.ringIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(ringIndex), gl.STATIC_DRAW);

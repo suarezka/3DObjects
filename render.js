@@ -130,6 +130,14 @@ function createObject() {
 
             obj = new Sphere(gl, radius3, subDiv3, stacks3);
             break;
+        case 4:
+            let radius4 = document.getElementById("sphere2-radius").valueAsNumber;
+            let subDiv4 = document.getElementById("sphere2-subdiv").valueAsNumber;
+
+            console.log("Sphere radius: " + radius4 + " sub division: " + subDiv4);
+
+            obj = new rSphere(gl, radius4, subDiv4);
+            break;
         case 5:
             let lRadius = document.getElementById("torus-lRadius").valueAsNumber;
             let sRadius = document.getElementById("torus-sRadius").valueAsNumber;
