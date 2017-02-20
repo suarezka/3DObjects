@@ -36,10 +36,6 @@ class rSphere {
         vec3.lerp (randColor, col1, col2, Math.random()); /* linear interpolation between two colors */
         vertices.push(randColor[0], randColor[1], randColor[2]);
 
-        //let A = vec3.push(radius, radius, radius);
-        //let B = vec3.push(radius, radius, radius);
-        //let C = vec3.push(radius, radius, radius);
-
         function tri(N,ax,ay,az,bx,by,bz,cx,cy,cz,na,nb,nc) {
             if(N == 0) {
                 return;
@@ -54,15 +50,24 @@ class rSphere {
                 let m3y = 0.5 * (ay + cy);
                 let m3z = 0.5 * (az + cz);
                 vertices.push(m1x, m1y, m1z);
+                vec3.lerp (randColor, col1, col2, Math.random()); /* linear interpolation between two colors */
+                vertices.push(randColor[0], randColor[1], randColor[2]);
                 vertices.push(m2x, m2y, m2z);
+                vec3.lerp (randColor, col1, col2, Math.random()); /* linear interpolation between two colors */
+                vertices.push(randColor[0], randColor[1], randColor[2]);
                 vertices.push(m3x, m3y, m3z);
-                tri(N - 1, ax, ay, az, m1x, m1y, m1z, m3x, m3y, m3z, na+4, nb+4, nc+4);
-                tri(N - 1, bx, by, bz, m1x, m1y, m1z, m3x, m3y, m3z, na+4, nb+4, nc+4);
-                tri(N - 1, cx, cy, cz, m1x, m1y, m1z, m3x, m3y, m3z, na+4, nb+4, nc+4);
+                vec3.lerp (randColor, col1, col2, Math.random()); /* linear interpolation between two colors */
+                vertices.push(randColor[0], randColor[1], randColor[2]);
+                tri(N - 1, ax, ay, az, m1x, m1y, m1z, m3x, m3y, m3z, na+6, nb+6, nc+6);
+                tri(N - 1, bx, by, bz, m1x, m1y, m1z, m3x, m3y, m3z, na+6, nb+6, nc+6);
+                tri(N - 1, cx, cy, cz, m1x, m1y, m1z, m3x, m3y, m3z, na+6, nb+6, nc+6);
             }
         }
 
         tri(subDiv, radius, radius, radius, -radius, -radius, radius, -radius, radius, -radius, 0, 1, 2);
+        tri(subDiv, -radius, -radius, radius, -radius, radius, -radius, radius, radius, radius, 1, 2, 3);
+        tri(subDiv, -radius, radius, -radius, radius, radius, radius, -radius, -radius, radius, 2, 3, 0);
+        //tri(subDiv, radius, radius, radius, -radius, -radius, radius, -radius, radius, -radius, 3, 0, 1);;
 
         /* copy the (x,y,z,r,g,b) sixtuplet into GPU buffer */
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vbuff);
@@ -70,13 +75,8 @@ class rSphere {
 
         // Generate index order for top of sphere
         let topIndex = [];
-        //topIndex.push(0);
-        for (let k = 0; k <= 20; k++)
+        for (let k = 0; k <= 160; k++)
             topIndex.push(k);
-        //topIndex.push(1);
-        //topIndex.push(2);
-        //topIndex.push(3);
-        //topIndex.push(4);
         this.topIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.topIdxBuff);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint8Array.from(topIndex), gl.STATIC_DRAW);
